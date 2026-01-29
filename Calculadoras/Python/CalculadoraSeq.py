@@ -1,6 +1,6 @@
 import re
 
-print("Esta é uma calculadora sequencial de python. Ela executa operações estritamente da esquerda para a direita")
+print("Esta é uma calculadora sequencial de python. Ela executa operações estritamente da esquerda para a direita.")
 print("Digite a sequência de operações a serem realizadas ou 'q' ou 'Ctrl + C' para sair.")
 
 Ans = []
@@ -13,35 +13,46 @@ while (1):
 
     if (len(seq) == 0):
         continue
-    arga = re.split(r'(\+) | (\-) | (\*) | (\\) | \s+', seq, maxsplit = 0)
-    if (len(seq) == 0):
-        print(arga)
-        continue
 
-    op = re.split(r'(\d+)', seq, maxsplit = 0)
-    if (len(seq) == 0):
-        print("Sequência de operações incompleta, tente novamente!")
-        continue
-    argb = re.split(r'(\+) | (\-) | (\*) | (\\) | \s+', seq, maxsplit = 0)
+    ops = seq.split()
 
-    print(arga)
-    numa = int(arga)
-    numb = int(argb)
+    #print(ops)
+    i = 0
+    valid = True
+    while ((len(ops) > 1) and (i <= len(ops))):
 
-    if (op == '+'):
-        res = numa + numb
-    elif (op == '-'):
-        res = numa - numb
-    elif (op == '*'):
-        res = numa * numb
-    elif (op == '/'):
-        try:
-            res = numa / numb
-        except ZeroDivisionError:
-            print("Erro! Divisão por zero")
+        if ((not isinstance(ops[i], int)) or (not isinstance(ops[i + 2], int))):
+            print("Operando não é um número!")
+            valid = False
+            i += 3
+            break
+        
+        numa = int(ops[i])
+        op = ops[i + 1]
+        numb = int(ops[i + 2])
+
+        if (op == '+'):
+            res = numa + numb
+        elif (op == '-'):
+            res = numa - numb
+        elif (op == '*'):
+            res = numa * numb
+        elif (op == '/'):
+            try:
+                res = numa / numb
+            except ZeroDivisionError:
+                print("Erro! Divisão por zero")
+                continue
+        else:
+            print("Operação Inválida! Operações Disponíveis: '+', '-', '*', '/'.")
             continue
-    else:
-        print("Operação Inválida! Operações Disponíveis: '+', '-', '*', '/'.")
-        continue
+
+        ops.insert(0, res)
+        i += 3
+
+    if (valid):
+        print(f"Seu resultado é: {res}")
+        Ans.insert(0, res)
+        
 
     
